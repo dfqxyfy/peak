@@ -44,8 +44,14 @@ public class QRCodeResponseController {
                                Model model,
                                HttpServletResponse response) {
         if (StringUtils.isEmpty(code)) {
-            getOpenIdFromWeixin(response);
-            return "";
+            //   getOpenIdFromWeixin(response);
+            //redirectURI 用户授权完成后的重定向链接
+            StringBuffer redirectURI = new StringBuffer(SNS_HOST + "/weixin/callback/");
+            String authUrl = wxMpService.oauth2buildAuthorizationUrl(redirectURI.toString(), WxConsts.OAUTH2_SCOPE_BASE, null);
+       /* 如果用户同意授权，页面将跳转至 redirect_uri/?code=CODE&state=STATE。
+        若用户禁止授权，则重定向后不会带上code参数，
+        仅会带上state参数 redirect_uri?state=STATE*/
+            return "redirect:" + authUrl;
         }
 
         QRCodeInfo qrCodeInfo = null;
