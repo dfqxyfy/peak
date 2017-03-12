@@ -6,26 +6,30 @@
     <title>二维码</title>
     <script type="text/javascript" src="${ctxStatic}/eqcode/jquery-3.1.1.js"></script>
     <script type="text/javascript" src="${ctxStatic}/eqcode/jquery.qrcode.js"></script>
-    <script type="text/javascript" src="${ctxStatic}/eqcode/qrcode.js"></script>
+    <style type="text/css">
+        img {
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
 
 <div>
-    <div>实际url:>
-    <input id="hiddenQr" value="${qrCodeInfo.eqCodeText}" /></div></div>
-<div id="qrcode">
+    <input id="hiddenQr" value="${qrCodeInfo.eqCodeText}" type="hidden"/>
+</div>
+
+<img id="qrcode" src="${qrCodeInfo.imgPath}">
+<div id="remind">
 
 </div>
 </body>
 </html>
 <script type="text/javascript">
-
-    $(document).ready( function createQrCode() {
+    $(document).ready(function createQrCode() {
         var codeText = $("#hiddenQr").val();
-        if (codeText == "") {
-            $('#qrcode').html("暂无数据，请联系管理员");
-        } else {
-           jQuery('#qrcode').qrcode(codeText);
+        if (remind == "") {
+            $('#remind').html("暂无数据，请联系管理员");
+            $('#qrcode').hide();
         }
     });
 

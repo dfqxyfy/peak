@@ -7,7 +7,8 @@
 		id,
 		open_id as "openId",
 		eqcode_text as "eqCodeText",
-		create_time as "createTime"
+		create_time as "createTime",
+		img_path as "imgPath"
 		FROM peak_eqcode a
 		WHERE a.open_id is  NULL
 		or a.open_id = ''

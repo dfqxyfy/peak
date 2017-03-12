@@ -19,7 +19,7 @@ public class WeixinMpConfiguration {
     @Value("${appid:wx6e286ce712a217b6}")
     private String appid;
 
-    @Value("${appsecret:fds5365fds7s8c2v5s685dsd2gllk5lk}")
+    @Value("${appsecret:7a9ea9205329f5359caa2d94c45ab86e}")
     private String appsecret;
 
     @Value("${token:nt03moa1jndke4pgxovelvw23pxbts15}")

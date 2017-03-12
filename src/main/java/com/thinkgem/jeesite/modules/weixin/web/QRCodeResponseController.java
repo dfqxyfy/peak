@@ -1,5 +1,6 @@
 package com.thinkgem.jeesite.modules.weixin.web;
 
+import com.thinkgem.jeesite.common.mapper.JsonMapper;
 import com.thinkgem.jeesite.modules.weixin.entity.QRCodeInfo;
 import com.thinkgem.jeesite.modules.weixin.service.QRCodeService;
 import me.chanjar.weixin.common.api.WxConsts;
@@ -68,6 +69,7 @@ public class QRCodeResponseController {
         qrCodeInfo.setCode(code);
         qrCodeInfo.setMsg(msg);
         model.addAttribute("qrCodeInfo", qrCodeInfo);
+        logger.info("qrCodeInfo>>>>>>>>>>>>{}", JsonMapper.toJsonString(qrCodeInfo));
         return "modules/weixin/qrcode";
     }
 
@@ -91,8 +93,10 @@ public class QRCodeResponseController {
      */
     @RequestMapping(value = "weixin/callback", method = RequestMethod.GET)
     public String callback(@RequestParam(value = "code", required = false) String code,
-                           @RequestParam(value = "state") String state,
+                           @RequestParam(value = "state", required = false) String state,
                            RedirectAttributes attributes) {
+
+        logger.info("weixinCode:{}", code);
 
         if (StringUtils.isEmpty(code)) {
             attributes.addFlashAttribute("code", "1001");
@@ -101,6 +105,7 @@ public class QRCodeResponseController {
             WxMpOAuth2AccessToken accessToken;
             try {
                 accessToken = this.wxMpService.oauth2getAccessToken(code);
+                logger.info("accessToken>>>>>>>>>>>>{}", JsonMapper.toJsonString(accessToken));
                 if (accessToken == null || StringUtils.isEmpty(accessToken.getOpenId())) {
                     attributes.addFlashAttribute("code", "1001");
                     attributes.addFlashAttribute("msg", "请在微信中打开");
@@ -113,6 +118,7 @@ public class QRCodeResponseController {
                 e.printStackTrace();
             }
         }
-        return "redirect:getQrCodeImg";
+        logger.info("attributes>>>>>>>>>>>>{}", JsonMapper.toJsonString(attributes));
+        return "redirect:/getQrCodeImg";
     }
 }

@@ -1,10 +1,12 @@
 package com.thinkgem.jeesite.modules.weixin.entity;
 
+import java.io.Serializable;
+
 /**
  * Created by huangweidong on 2017/3/10
  * email:wb-huangweidong@le.com
  */
-public class QRCodeInfo {
+public class QRCodeInfo implements Serializable {
     private String id;
     private Integer status;
     private String eqCodeText;
