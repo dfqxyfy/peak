@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.eqcode.dao.PeakEqcodeRepeatDao">
+    
+	<sql id="peakEqcodeRepeatColumns">
+		a.id AS "id",
+		a.eqcode_text AS "eqcodeText",
+		a.create_time AS "createTime"
+	</sql>
+	
+	<sql id="peakEqcodeRepeatJoins">
+	</sql>
+    
+	<select id="get" resultType="PeakEqcodeRepeat">
+		SELECT 
+			<include refid="peakEqcodeRepeatColumns"/>
+		FROM peak_eqcode_repeat a
+		<include refid="peakEqcodeRepeatJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="PeakEqcodeRepeat">
+		SELECT 
+			<include refid="peakEqcodeRepeatColumns"/>
+		FROM peak_eqcode_repeat a
+		<include refid="peakEqcodeRepeatJoins"/>
+		<where>
+			<if test="eqcodeText != null and eqcodeText != ''">
+				AND a.eqcode_text = #{eqcodeText}
+			</if>
+			<if test="beginCreateTime != null and endCreateTime != null and beginCreateTime != '' and endCreateTime != ''">
+				AND a.create_time BETWEEN #{beginCreateTime} AND #{endCreateTime}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="PeakEqcodeRepeat">
+		SELECT 
+			<include refid="peakEqcodeRepeatColumns"/>
+		FROM peak_eqcode_repeat a
+		<include refid="peakEqcodeRepeatJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO peak_eqcode_repeat(
+			id,
+			eqcode_text,
+			create_time
+		) VALUES (
+			#{id},
+			#{eqcodeText},
+			#{createTime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE peak_eqcode_repeat SET 	
+			eqcode_text = #{eqcodeText},
+			create_time = #{createTime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM peak_eqcode_repeat
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

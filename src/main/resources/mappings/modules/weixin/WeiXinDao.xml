@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.weixin.dao.WeiXinDao">
+
+    <select id="getUnUsedCode" resultType="com.thinkgem.jeesite.modules.weixin.entity.QRCodeInfo">
+		SELECT
+		id,
+		open_id as "openId",
+		eqcode_text as "eqCodeText",
+		create_time as "createTime"
+		FROM peak_eqcode a
+		WHERE a.open_id is  NULL
+		or a.open_id = ''
+		LIMIT 1
+	</select>
+
+
+    <select id="getCodeInfoByOpenId" resultType="com.thinkgem.jeesite.modules.weixin.entity.QRCodeInfo">
+		SELECT
+		id,
+		open_id as "openId",
+		eqcode_text as "eqCodeText",
+		create_time as "createTime",
+		img_path as "imgPath"
+		FROM peak_eqcode a
+		WHERE a.open_id =#{openId}
+		LIMIT 1
+	</select>
+
+    <update id="updateCodeToUsed">
+		UPDATE peak_eqcode SET
+			open_id = #{openId},
+			update_time = now()
+		WHERE id = #{id}
+	</update>
+
+</mapper>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.eqcode.dao.PeakEqcodeDao">
+    
+	<sql id="peakEqcodeColumns">
+		a.id AS "id",
+		a.open_id AS "openId",
+		a.eqcode_text AS "eqcodeText",
+		a.img_path as "imgPath",
+		a.create_time AS "createTime",
+		a.update_time AS "updateTime"
+	</sql>
+	
+	<sql id="peakEqcodeJoins">
+	</sql>
+    
+	<select id="get" resultType="PeakEqcode">
+		SELECT 
+			<include refid="peakEqcodeColumns"/>
+		FROM peak_eqcode a
+		<include refid="peakEqcodeJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="PeakEqcode">
+		SELECT 
+			<include refid="peakEqcodeColumns"/>
+		FROM peak_eqcode a
+		<include refid="peakEqcodeJoins"/>
+		<where>
+			
+			<if test="openId != null and openId != ''">
+				AND a.open_id = #{openId}
+			</if>
+			<if test="eqcodeText != null and eqcodeText != ''">
+				AND a.eqcode_text = #{eqcodeText}
+			</if>
+			<if test="beginCreateTime != null and endCreateTime != null and beginCreateTime != '' and endCreateTime != ''">
+				AND a.create_time BETWEEN #{beginCreateTime} AND #{endCreateTime}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="PeakEqcode">
+		SELECT 
+			<include refid="peakEqcodeColumns"/>
+		FROM peak_eqcode a
+		<include refid="peakEqcodeJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO peak_eqcode(
+			id,
+			open_id,
+			eqcode_text,
+			img_path,
+			create_time,
+			update_time
+		) VALUES (
+			#{id},
+			#{openId},
+			#{eqcodeText},
+			#{imgPath},
+			#{createTime},
+			#{updateTime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE peak_eqcode SET 	
+			open_id = #{openId},
+			eqcode_text = #{eqcodeText},
+			create_time = #{createTime},
+			update_time = #{updateTime}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM peak_eqcode
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
